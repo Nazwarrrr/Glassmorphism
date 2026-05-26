@@ -89,8 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Admin - E-Perpus SMEA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         * {
@@ -131,20 +130,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Page title -->
             <div class="mb-6">
-                <h2 class="text-3xl font-bold text-slate-800">👤 Profil Petugas</h2>
+                <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-user"></i> Profil Petugas</h2>
                 <p class="text-slate-600 mt-1">Kelola informasi pribadi dan keamanan akun Anda</p>
             </div>
 
             <!-- Messages -->
             <?php if (!empty($success_message)): ?>
                 <div class="mb-6 p-4 bg-emerald-50/80 border border-emerald-200 rounded-lg">
-                    <p class="text-sm text-emerald-800">✓ <?php echo htmlspecialchars($success_message); ?></p>
+                    <p class="text-sm text-emerald-800"><i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($success_message); ?></p>
                 </div>
             <?php endif; ?>
 
             <?php if (!empty($error_message)): ?>
                 <div class="mb-6 p-4 bg-red-50/80 border border-red-200 rounded-lg">
-                    <p class="text-sm text-red-800">✕ <?php echo htmlspecialchars($error_message); ?></p>
+                    <p class="text-sm text-red-800"><i class="fas fa-times-circle"></i> <?php echo htmlspecialchars($error_message); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -152,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Update Profil Section -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">📋 Informasi Pribadi</h3>
+                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-clipboard-list"></i> Informasi Pribadi</h3>
 
                     <form method="POST" class="space-y-4">
                         <input type="hidden" name="action" value="update_profil">
@@ -253,11 +252,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Security tips -->
                     <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p class="text-xs font-semibold text-blue-900 mb-2">💡 Tips Keamanan:</p>
+                        <p class="text-xs font-semibold text-blue-900 mb-2"><i class="fas fa-lightbulb"></i> Tips Keamanan:</p>
                         <ul class="text-xs text-blue-800 space-y-1">
-                            <li>✓ Gunakan password yang kuat (huruf + angka + simbol)</li>
-                            <li>✓ Jangan bagikan password kepada siapa pun</li>
-                            <li>✓ Ubah password secara berkala</li>
+                            <li><i class="fas fa-check"></i> Gunakan password yang kuat (huruf + angka + simbol)</li>
+                            <li><i class="fas fa-check"></i> Jangan bagikan password kepada siapa pun</li>
+                            <li><i class="fas fa-check"></i> Ubah password secara berkala</li>
                         </ul>
                     </div>
                 </div>
@@ -265,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Account info section -->
             <div class="mt-6 bg-slate-50/40 border border-slate-200 rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">ℹ️ Informasi Akun</h3>
+                <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fas fa-info-circle"></i> Informasi Akun</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
                         <p class="text-slate-600">ID User:</p>
@@ -282,9 +281,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mt-6 bg-blue-50/40 border border-blue-200 rounded-2xl p-6">
                 <h3 class="text-lg font-bold text-blue-900 mb-4">🛠️ Informasi Sistem</h3>
                 <ul class="text-sm text-blue-800 space-y-2">
-                    <li>✓ PHP Version: <?php echo phpversion(); ?></li>
-                    <li>✓ Server: <?php echo $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown'; ?></li>
-                    <li>✓ Tanggal Akses: <?php echo date('d F Y H:i:s'); ?></li>
+                    <li><i class="fas fa-check"></i> PHP Version: <?php echo phpversion(); ?></li>
+                    <li><i class="fas fa-check"></i> Server: <?php echo $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown'; ?></li>
+                    <li><i class="fas fa-check"></i> Tanggal Akses: <?php echo date('d F Y H:i:s'); ?></li>
                 </ul>
             </div>
         </main>

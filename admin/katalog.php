@@ -28,8 +28,7 @@ $books = fetch_all(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katalog Admin - E-Perpus SMEA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -79,7 +78,7 @@ $books = fetch_all(
             <!-- Page title & action buttons -->
             <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold text-slate-800">📚 Katalog Buku</h2>
+                    <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-book"></i> Katalog Buku</h2>
                     <p class="text-slate-600 mt-1">Kelola koleksi buku perpustakaan</p>
                 </div>
                 <button
@@ -106,7 +105,7 @@ $books = fetch_all(
                     <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl overflow-hidden shadow-xl shadow-slate-100/50 hover:shadow-2xl transition">
                         <!-- Book image -->
                         <div class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 h-48 flex items-center justify-center">
-                            <img :src="'/Perpustakaan/assets/img/' + book.cover_buku" :alt="book.judul" class="w-full h-full object-cover">
+                            <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="w-full h-full object-cover">
                             <!-- Stock badge -->
                             <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
                                 <span x-text="book.stok + ' stok'"></span>
@@ -163,7 +162,7 @@ $books = fetch_all(
                             @click="showModal = false"
                             class="absolute top-4 right-4 text-slate-600 hover:text-slate-800 text-2xl"
                         >
-                            ✕
+                            <i class="fas fa-times"></i>
                         </button>
 
                         <!-- Form title -->
@@ -358,7 +357,7 @@ $books = fetch_all(
                         stok: book.stok,
                         sinopsis: book.sinopsis || '',
                         cover_buku: book.cover_buku,
-                        cover_preview: '/Perpustakaan/assets/img/' + book.cover_buku,
+                        cover_preview: '/Glassmorphism/assets/img/' + book.cover_buku,
                         cover_file: null
                     };
                     this.showModal = true;
@@ -393,7 +392,7 @@ $books = fetch_all(
                         formDataObj.append('cover_buku', this.formData.cover_file);
                     }
 
-                    const endpoint = this.isEditMode ? '/Perpustakaan/api/edit_book.php' : '/Perpustakaan/api/add_book.php';
+                    const endpoint = this.isEditMode ? '/Glassmorphism/api/edit_book.php' : '/Glassmorphism/api/add_book.php';
 
                     fetch(endpoint, {
                         method: 'POST',
@@ -441,7 +440,7 @@ $books = fetch_all(
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            fetch('/Perpustakaan/api/delete_book.php', {
+                            fetch('/Glassmorphism/api/delete_book.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

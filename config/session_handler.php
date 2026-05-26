@@ -29,7 +29,7 @@ function check_session_timeout() {
     // Jika sudah melebihi timeout, destroy session
     if ($elapsed > SESSION_TIMEOUT) {
         session_destroy();
-        header("Location: /Perpustakaan/auth/login.php?timeout=1");
+        header("Location: /Glassmorphism/auth/login.php?timeout=1");
         exit();
     }
 
@@ -51,16 +51,16 @@ function is_logged_in() {
  */
 function check_role($required_role) {
     if (!is_logged_in()) {
-        header("Location: /Perpustakaan/auth/login.php");
+        header("Location: /Glassmorphism/auth/login.php");
         exit();
     }
 
     if ($_SESSION['role'] !== $required_role) {
         // Redirect ke dashboard sesuai role mereka
         if ($_SESSION['role'] === 'siswa') {
-            header("Location: /Perpustakaan/siswa/dashboard.php");
+            header("Location: /Glassmorphism/siswa/dashboard.php");
         } else {
-            header("Location: /Perpustakaan/admin/dashboard.php");
+            header("Location: /Glassmorphism/admin/dashboard.php");
         }
         exit();
     }
@@ -79,9 +79,9 @@ function redirect_by_role() {
     check_session_timeout();
 
     if ($_SESSION['role'] === 'siswa') {
-        header("Location: /Perpustakaan/siswa/dashboard.php");
+        header("Location: /Glassmorphism/siswa/dashboard.php");
     } else {
-        header("Location: /Perpustakaan/admin/dashboard.php");
+        header("Location: /Glassmorphism/admin/dashboard.php");
     }
     exit();
 }
@@ -91,7 +91,7 @@ function redirect_by_role() {
  */
 function do_logout() {
     session_destroy();
-    header("Location: /Perpustakaan/auth/login.php");
+    header("Location: /Glassmorphism/auth/login.php");
     exit();
 }
 ?>

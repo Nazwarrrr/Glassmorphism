@@ -56,6 +56,7 @@ $active_books = fetch_all(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - E-Perpus SMEA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -97,7 +98,7 @@ $active_books = fetch_all(
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Welcome section -->
             <div class="mb-8">
-                <h2 class="text-3xl font-bold text-slate-800">Selamat datang, <?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>! 👋</h2>
+                <h2 class="text-3xl font-bold text-slate-800">Selamat datang, <?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>! <i class="fas fa-hand-paper"></i></h2>
                 <p class="text-slate-600 mt-1">Kelas: <?php echo htmlspecialchars($_SESSION['kelas'] ?? '-'); ?></p>
             </div>
 
@@ -111,7 +112,7 @@ $active_books = fetch_all(
                             <p class="text-4xl font-bold text-[#0E7490] mt-2"><?php echo $total_active_loans; ?>/<?php echo MAX_PEMINJAMAN_AKTIF; ?></p>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-lg">
-                            <span class="text-2xl">📚</span>
+                            <span class="text-2xl"><i class="fas fa-book"></i></span>
                         </div>
                     </div>
                     <p class="text-xs text-slate-500 mt-4">Booking + Sedang dibawa</p>
@@ -127,7 +128,11 @@ $active_books = fetch_all(
                             </p>
                         </div>
                         <div class="<?php echo ($total_fine > 0) ? 'bg-red-100' : 'bg-emerald-100'; ?> p-3 rounded-lg">
-                            <span class="text-2xl"><?php echo ($total_fine > 0) ? '⚠️' : '✅'; ?></span>
+                            <?php if ($total_fine > 0): ?>
+                                <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                            <?php else: ?>
+                                <i class="fas fa-check-circle text-2xl text-emerald-600"></i>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <p class="text-xs text-slate-500 mt-4">
@@ -143,7 +148,7 @@ $active_books = fetch_all(
                             <p class="text-4xl font-bold text-[#0E7490] mt-2"><?php echo count($active_books); ?></p>
                         </div>
                         <div class="bg-amber-100 p-3 rounded-lg">
-                            <span class="text-2xl">📖</span>
+                            <span class="text-2xl"><i class="fas fa-book-open"></i></span>
                         </div>
                     </div>
                     <p class="text-xs text-slate-500 mt-4">Buku aktif yang sedang Anda pinjam</p>
@@ -154,9 +159,9 @@ $active_books = fetch_all(
             <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                        <span>📋</span> Buku Yang Sedang Dibawa
+                        <span><i class="fas fa-clipboard-list"></i></span> Buku Yang Sedang Dibawa
                     </h3>
-                    <a href="/Perpustakaan/siswa/pinjaman.php" class="text-[#0E7490] hover:text-[#155E75] text-sm font-semibold">
+                    <a href="/Glassmorphism/siswa/pinjaman.php" class="text-[#0E7490] hover:text-[#155E75] text-sm font-semibold">
                         Lihat semua →
                     </a>
                 </div>
@@ -164,7 +169,7 @@ $active_books = fetch_all(
                 <?php if (empty($active_books)): ?>
                     <div class="text-center py-8">
                         <p class="text-slate-600 mb-4">Anda belum memiliki buku yang sedang dibawa</p>
-                        <a href="/Perpustakaan/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
+                        <a href="/Glassmorphism/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
                             Jelajahi Katalog
                         </a>
                     </div>
@@ -202,12 +207,12 @@ $active_books = fetch_all(
 
             <!-- Tips section -->
             <div class="mt-8 bg-emerald-50/40 border border-emerald-200 rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-emerald-900 mb-3">💡 Tips Literasi</h3>
+                <h3 class="text-lg font-bold text-emerald-900 mb-3"><i class="fas fa-lightbulb"></i> Tips Literasi</h3>
                 <ul class="space-y-2 text-emerald-800 text-sm">
-                    <li>✓ Kembalikan buku tepat waktu untuk menghindari denda</li>
-                    <li>✓ Anda dapat meminjam maksimal 3 buku dalam satu waktu</li>
-                    <li>✓ Booking akan otomatis dibatalkan jika tidak diambil dalam 2x24 jam</li>
-                    <li>✓ Jelajahi katalog buku dan temukan bacaan favorit Anda!</li>
+                    <li><i class="fas fa-check"></i> Kembalikan buku tepat waktu untuk menghindari denda</li>
+                    <li><i class="fas fa-check"></i> Anda dapat meminjam maksimal 3 buku dalam satu waktu</li>
+                    <li><i class="fas fa-check"></i> Booking akan otomatis dibatalkan jika tidak diambil dalam 2x24 jam</li>
+                    <li><i class="fas fa-check"></i> Jelajahi katalog buku dan temukan bacaan favorit Anda!</li>
                 </ul>
             </div>
         </main>

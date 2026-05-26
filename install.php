@@ -2,7 +2,7 @@
 /**
  * Installation Script - E-Perpus SMEA
  * Buat database, table, seed data dalam 1 klik
- * Akses: http://localhost/Perpustakaan/install.php
+ * Akses: http://localhost/glassmorphism/install.php
  */
 
 // Koneksi ke MySQL server tanpa database spesifik
@@ -197,6 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installation - E-Perpus SMEA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
@@ -230,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
     <div class="w-full max-w-md bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 shadow-xl shadow-slate-100/50 relative z-10">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-800">📚 E-Perpus SMEA</h1>
+            <h1 class="text-3xl font-bold text-slate-800"><i class="fas fa-book"></i> E-Perpus SMEA</h1>
             <p class="text-slate-600 mt-2">Setup & Instalasi Database</p>
         </div>
 
@@ -238,23 +239,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
             <!-- Success State -->
             <div class="space-y-4">
                 <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
-                    <p class="text-2xl mb-2">✅</p>
+                    <p class="text-2xl mb-2"><i class="fas fa-check-circle"></i></p>
                     <p class="text-lg font-bold text-emerald-900">Instalasi Berhasil!</p>
                     <p class="text-sm text-emerald-800 mt-2">Database dan seed data telah dibuat.</p>
                 </div>
 
                 <!-- Credentials Info -->
                 <div class="space-y-3">
-                    <p class="text-sm font-semibold text-slate-700">📝 Test Credentials:</p>
+                    <p class="text-sm font-semibold text-slate-700"><i class="fas fa-clipboard"></i> Test Credentials:</p>
 
                     <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                        <p class="text-xs text-blue-600">👤 Siswa:</p>
+                        <p class="text-xs text-blue-600"><i class="fas fa-user"></i> Siswa:</p>
                         <p class="font-mono text-sm font-bold text-blue-900">username: <span class="text-emerald-600">siswa</span></p>
                         <p class="font-mono text-sm font-bold text-blue-900">password: <span class="text-emerald-600">password</span></p>
                     </div>
 
                     <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                        <p class="text-xs text-purple-600">👨‍💼 Admin:</p>
+                        <p class="text-xs text-purple-600"><i class="fas fa-user-tie"></i> Admin:</p>
                         <p class="font-mono text-sm font-bold text-purple-900">username: <span class="text-emerald-600">admin</span></p>
                         <p class="font-mono text-sm font-bold text-purple-900">password: <span class="text-emerald-600">password</span></p>
                     </div>
@@ -262,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
 
                 <!-- Database Info -->
                 <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-700">
-                    <p class="font-semibold mb-2">✓ Database Info:</p>
+                    <p class="font-semibold mb-2"><i class="fas fa-check"></i> Database Info:</p>
                     <ul class="space-y-1">
                         <li>• Database: <code class="bg-white px-2 py-1 rounded">perpustakaan_smea</code></li>
                         <li>• Host: <code class="bg-white px-2 py-1 rounded">localhost</code></li>
@@ -274,10 +275,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
                 <!-- Action buttons -->
                 <div class="space-y-2 mt-6">
                     <a href="index.php" class="block w-full bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-3 rounded-lg font-semibold text-center transition">
-                        🚀 Buka Aplikasi
+                        <i class="fas fa-rocket"></i> Buka Aplikasi
                     </a>
                     <button onclick="location.reload()" class="w-full bg-slate-300 hover:bg-slate-400 text-slate-800 px-4 py-3 rounded-lg font-semibold transition">
-                        🔄 Install Ulang
+                        <i class="fas fa-sync-alt"></i> Install Ulang
                     </button>
                 </div>
             </div>
@@ -286,14 +287,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
             <!-- Error State -->
             <div class="space-y-4">
                 <div class="bg-red-50 border border-red-200 rounded-xl p-4">
-                    <p class="text-2xl mb-2">❌</p>
+                    <p class="text-2xl mb-2"><i class="fas fa-times-circle"></i></p>
                     <p class="text-lg font-bold text-red-900">Instalasi Gagal</p>
                     <p class="text-sm text-red-800 mt-2 font-mono break-words"><?php echo htmlspecialchars($error); ?></p>
                 </div>
 
                 <!-- Troubleshooting -->
                 <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-xs text-yellow-900">
-                    <p class="font-semibold mb-2">🔧 Troubleshooting:</p>
+                    <p class="font-semibold mb-2"><i class="fas fa-wrench"></i> Troubleshooting:</p>
                     <ul class="space-y-1 list-disc list-inside">
                         <li>Pastikan MySQL/XAMPP sedang berjalan</li>
                         <li>Cek konfigurasi di file ini (host, user, password)</li>
@@ -302,7 +303,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
                 </div>
 
                 <button onclick="location.reload()" class="w-full bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-3 rounded-lg font-semibold transition">
-                    🔄 Coba Lagi
+                    <i class="fas fa-sync-alt"></i> Coba Lagi
                 </button>
             </div>
 
@@ -310,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
             <!-- Initial State -->
             <div class="space-y-4">
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-900">
-                    <p class="font-semibold mb-2">📋 Akan Dilakukan:</p>
+                    <p class="font-semibold mb-2"><i class="fas fa-clipboard-list"></i> Akan Dilakukan:</p>
                     <ul class="space-y-1 list-disc list-inside">
                         <li>Buat database <code>perpustakaan_smea</code></li>
                         <li>Buat 4 tabel (kategori, users, buku, peminjaman)</li>
@@ -321,19 +322,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install'])) {
                 </div>
 
                 <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm text-yellow-900">
-                    <p class="font-semibold mb-1">⚠️ Catatan Penting:</p>
+                    <p class="font-semibold mb-1"><i class="fas fa-exclamation-triangle"></i> Catatan Penting:</p>
                     <p>Jika database sudah ada sebelumnya, data lama akan dihapus!</p>
                 </div>
 
                 <form method="POST" class="space-y-3">
                     <input type="hidden" name="install" value="1">
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-lg font-semibold transition">
-                        ✅ Mulai Instalasi
+                        <i class="fas fa-check-circle"></i> Mulai Instalasi
                     </button>
                 </form>
 
                 <a href="index.php" class="block w-full bg-slate-300 hover:bg-slate-400 text-slate-800 px-4 py-3 rounded-lg font-semibold text-center transition">
-                    ❌ Batal
+                    <i class="fas fa-times-circle"></i> Batal
                 </a>
             </div>
 

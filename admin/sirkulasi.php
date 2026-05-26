@@ -47,6 +47,7 @@ foreach ($active_loans as &$loan) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meja Sirkulasi - E-Perpus SMEA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -89,7 +90,7 @@ foreach ($active_loans as &$loan) {
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto" x-data="sirkuApp()">
             <!-- Page title -->
             <div class="mb-6">
-                <h2 class="text-3xl font-bold text-slate-800">🔄 Meja Sirkulasi</h2>
+                <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-sync-alt"></i> Meja Sirkulasi</h2>
                 <p class="text-slate-600 mt-1">Kelola transaksi booking dan pengembalian buku</p>
             </div>
 
@@ -100,14 +101,14 @@ foreach ($active_loans as &$loan) {
                     :class="activeTab === 'pending' ? 'bg-[#0E7490] text-white' : 'bg-white/50 hover:bg-white/70 text-slate-700'"
                     class="flex-1 min-w-[150px] px-4 py-3 rounded-lg font-semibold transition text-center"
                 >
-                    ⏳ Antrean Pengajuan (<?php echo count($pending_bookings); ?>)
+                    <i class="fas fa-hourglass-half"></i> Antrean Pengajuan (<?php echo count($pending_bookings); ?>)
                 </button>
                 <button
                     @click="activeTab = 'active'"
                     :class="activeTab === 'active' ? 'bg-[#0E7490] text-white' : 'bg-white/50 hover:bg-white/70 text-slate-700'"
                     class="flex-1 min-w-[150px] px-4 py-3 rounded-lg font-semibold transition text-center"
                 >
-                    📖 Buku Sedang Dipinjam (<?php echo count($active_loans); ?>)
+                    <i class="fas fa-book-open"></i> Buku Sedang Dipinjam (<?php echo count($active_loans); ?>)
                 </button>
             </div>
 
@@ -120,7 +121,7 @@ foreach ($active_loans as &$loan) {
                 <?php else: ?>
                     <div class="bg-blue-50/40 border border-blue-200 rounded-2xl p-4 mb-4">
                         <p class="text-sm text-blue-900">
-                            ℹ️ Ketika siswa datang ke meja, klik tombol ✓ untuk konfirmasi dan mulai peminjaman.
+                            <i class="fas fa-info-circle"></i> Ketika siswa datang ke meja, klik tombol <i class="fas fa-check"></i> untuk konfirmasi dan mulai peminjaman.
                         </p>
                     </div>
 
@@ -153,7 +154,7 @@ foreach ($active_loans as &$loan) {
                                                 class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-4 py-2 rounded-lg font-semibold text-sm transition"
                                                 title="Approve booking (setujui peminjaman)"
                                             >
-                                                ✓ Setuju
+                                                <i class="fas fa-check"></i> Setuju
                                             </button>
                                         </td>
                                     </tr>
@@ -173,7 +174,7 @@ foreach ($active_loans as &$loan) {
                 <?php else: ?>
                     <div class="bg-amber-50/40 border border-amber-200 rounded-2xl p-4 mb-4">
                         <p class="text-sm text-amber-900">
-                            ℹ️ Ketika siswa mengembalikan buku fisik, klik tombol ↺ untuk mencatat pengembalian dan hitung denda otomatis.
+                            <i class="fas fa-info-circle"></i> Ketika siswa mengembalikan buku fisik, klik tombol <i class="fas fa-redo"></i> untuk mencatat pengembalian dan hitung denda otomatis.
                         </p>
                     </div>
 
@@ -255,7 +256,7 @@ foreach ($active_loans as &$loan) {
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            fetch('/Perpustakaan/api/approve_booking.php', {
+                            fetch('/Glassmorphism/api/approve_booking.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -301,7 +302,7 @@ foreach ($active_loans as &$loan) {
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            fetch('/Perpustakaan/api/return_book.php', {
+                            fetch('/Glassmorphism/api/return_book.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

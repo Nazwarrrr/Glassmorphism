@@ -19,9 +19,7 @@ function render_navbar($page_title, $role = null) {
             <div class="flex justify-between items-center h-16">
                 <!-- Logo/Title -->
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-[#0E7490] rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                        E
-                    </div>
+                    <img src="/Glassmorphism/images/perpus-logo.png" alt="Perpus Logo" class="h-12 object-contain">
                     <div>
                         <h1 class="text-lg font-bold text-[#0E7490]">E-Perpus SMEA</h1>
                         <p class="text-xs text-slate-500"><?php echo htmlspecialchars($page_title); ?></p>
@@ -34,7 +32,7 @@ function render_navbar($page_title, $role = null) {
                         <p class="text-sm font-medium text-slate-700"><?php echo htmlspecialchars($_SESSION['nama_lengkap'] ?? ''); ?></p>
                         <p class="text-xs text-slate-500 capitalize"><?php echo htmlspecialchars($role); ?><?php echo ($role === 'siswa' && isset($_SESSION['kelas'])) ? ' - ' . htmlspecialchars($_SESSION['kelas']) : ''; ?></p>
                     </div>
-                    <a href="/Perpustakaan/auth/logout.php" class="bg-red-100/80 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg text-sm font-medium transition">
+                    <a href="/Glassmorphism/auth/logout.php" class="bg-red-100/80 hover:bg-red-200 text-red-700 px-3 py-2 rounded-lg text-sm font-medium transition">
                         Logout
                     </a>
                 </div>
@@ -50,10 +48,10 @@ function render_navbar($page_title, $role = null) {
  */
 function render_sidebar_siswa($active_menu) {
     $menus = [
-        'dashboard' => ['label' => 'Dashboard', 'url' => '/Perpustakaan/siswa/dashboard.php', 'icon' => '📊'],
-        'katalog' => ['label' => 'Katalog Buku', 'url' => '/Perpustakaan/siswa/katalog.php', 'icon' => '📚'],
-        'pinjaman' => ['label' => 'Pinjaman Saya', 'url' => '/Perpustakaan/siswa/pinjaman.php', 'icon' => '📋'],
-        'profil' => ['label' => 'Profil', 'url' => '/Perpustakaan/siswa/profil.php', 'icon' => '👤'],
+        'dashboard' => ['label' => 'Dashboard', 'url' => '/Glassmorphism/siswa/dashboard.php', 'icon' => '<i class="fas fa-chart-pie"></i>'],
+        'katalog' => ['label' => 'Katalog Buku', 'url' => '/Glassmorphism/siswa/katalog.php', 'icon' => '<i class="fas fa-book"></i>'],
+        'pinjaman' => ['label' => 'Pinjaman Saya', 'url' => '/Glassmorphism/siswa/pinjaman.php', 'icon' => '<i class="fas fa-clipboard-list"></i>'],
+        'profil' => ['label' => 'Profil', 'url' => '/Glassmorphism/siswa/profil.php', 'icon' => '<i class="fas fa-user"></i>'],
     ];
     ?>
     <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r border-white/60 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
@@ -81,10 +79,10 @@ function render_sidebar_siswa($active_menu) {
  */
 function render_sidebar_admin($active_menu) {
     $menus = [
-        'dashboard' => ['label' => 'Dashboard', 'url' => '/Perpustakaan/admin/dashboard.php', 'icon' => '📊'],
-        'sirkulasi' => ['label' => 'Meja Sirkulasi', 'url' => '/Perpustakaan/admin/sirkulasi.php', 'icon' => '🔄'],
-        'katalog' => ['label' => 'Katalog Buku', 'url' => '/Perpustakaan/admin/katalog.php', 'icon' => '📚'],
-        'profil' => ['label' => 'Profil', 'url' => '/Perpustakaan/admin/profil.php', 'icon' => '👤'],
+        'dashboard' => ['label' => 'Dashboard', 'url' => '/Glassmorphism/admin/dashboard.php', 'icon' => '<i class="fas fa-chart-pie"></i>'],
+        'sirkulasi' => ['label' => 'Meja Sirkulasi', 'url' => '/Glassmorphism/admin/sirkulasi.php', 'icon' => '<i class="fas fa-sync-alt"></i>'],
+        'katalog' => ['label' => 'Katalog Buku', 'url' => '/Glassmorphism/admin/katalog.php', 'icon' => '<i class="fas fa-book"></i>'],
+        'profil' => ['label' => 'Profil', 'url' => '/Glassmorphism/admin/profil.php', 'icon' => '<i class="fas fa-user"></i>'],
     ];
     ?>
     <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r border-white/60 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
@@ -119,7 +117,7 @@ function render_status_badge($status, $denda = 0, $tgl_kembali = null) {
     switch ($status) {
         case 'Menunggu Konfirmasi':
             $badge_class = 'bg-amber-100/80 text-amber-800 border border-amber-300';
-            $icon = '⏳';
+            $icon = '<i class="fas fa-hourglass-half"></i>';
             break;
         case 'Sedang Dipinjam':
             // Check if approaching due date
@@ -131,31 +129,31 @@ function render_status_badge($status, $denda = 0, $tgl_kembali = null) {
 
                 if ($hours_left < 24) {
                     $badge_class = 'bg-orange-100/80 text-orange-800 border border-orange-300';
-                    $icon = '⚠️';
+                    $icon = '<i class="fas fa-exclamation-triangle"></i>';
                 } else {
                     $badge_class = 'bg-emerald-100/80 text-emerald-800 border border-emerald-300';
-                    $icon = '✅';
+                    $icon = '<i class="fas fa-check-circle"></i>';
                 }
             } else {
                 $badge_class = 'bg-emerald-100/80 text-emerald-800 border border-emerald-300';
-                $icon = '✅';
+                $icon = '<i class="fas fa-check-circle"></i>';
             }
             break;
         case 'Terlambat':
             $badge_class = 'bg-red-100/80 text-red-800 border border-red-300';
-            $icon = '❌';
+            $icon = '<i class="fas fa-times-circle"></i>';
             break;
         case 'Selesai':
             $badge_class = 'bg-blue-100/80 text-blue-800 border border-blue-300';
-            $icon = '✓';
+            $icon = '<i class="fas fa-check"></i>';
             break;
         case 'Ditolak':
             $badge_class = 'bg-slate-100/80 text-slate-800 border border-slate-300';
-            $icon = '✕';
+            $icon = '<i class="fas fa-times"></i>';
             break;
         default:
             $badge_class = 'bg-slate-100/80 text-slate-800 border border-slate-300';
-            $icon = '•';
+            $icon = '<i class="fas fa-circle"></i>';
     }
 
     echo '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ' . $badge_class . '">';

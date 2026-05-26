@@ -12,6 +12,12 @@ if (is_logged_in()) {
 }
 
 // Jika belum login, redirect ke login page
-header("Location: /Perpustakaan/auth/login.php");
+// Jika redirect tidak bekerja, include login page langsung
+if (!headers_sent()) {
+    header("Location: /Glassmorphism/auth/login.php");
+} else {
+    // Fallback: include login page langsung
+    include __DIR__ . '/auth/login.php';
+}
 exit();
 ?>

@@ -47,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Redirect ke dashboard sesuai role
             if ($user['role'] === 'siswa') {
-                header("Location: /Perpustakaan/siswa/dashboard.php");
+                header("Location: /Glassmorphism/siswa/dashboard.php");
             } else {
-                header("Location: /Perpustakaan/admin/dashboard.php");
+                header("Location: /Glassmorphism/admin/dashboard.php");
             }
             exit();
         } else {
@@ -99,9 +99,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="min-h-screen flex items-center justify-center relative z-10">
         <div class="w-full max-w-md p-6">
             <!-- Card login dengan glass morphism effect -->
-            <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 shadow-xl shadow-slate-100/50">
-                <!-- Logo/Title -->
-                <div class="text-center mb-8">
+            <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 shadow-xl shadow-slate-100/50 relative">
+                <!-- Logo Perpus (Far Left) -->
+                <div class="absolute -left-2 -top-2">
+                    <img src="/Glassmorphism/images/perpus-logo.png" alt="Perpus Logo" class="h-20 object-contain">
+                </div>
+
+                <!-- Title -->
+                <div class="text-center mb-8 pt-6">
                     <h1 class="text-3xl font-bold text-[#0E7490] mb-2">E-Perpus SMEA</h1>
                     <p class="text-slate-600 text-sm">Sistem Perpustakaan Digital Sekolah Menengah Kejuruan</p>
                 </div>

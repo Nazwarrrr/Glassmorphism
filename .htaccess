@@ -1,0 +1,18 @@
+# Set DirectoryIndex to index.php as default
+DirectoryIndex index.php index.html index.htm
+
+# Enable PHP if needed
+AddType application/x-httpd-php .php
+
+# Optional: Enable mod_rewrite if available
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Glassmorphism/
+    
+    # Don't rewrite if it's a real file or directory
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Rewrite everything else to index.php
+    RewriteRule ^(.*)$ index.php [L,QSA]
+</IfModule>

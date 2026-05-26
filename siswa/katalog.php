@@ -33,8 +33,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katalog Buku - E-Perpus SMEA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -83,7 +82,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto" x-data="katalogApp()">
             <!-- Page title -->
             <div class="mb-6">
-                <h2 class="text-3xl font-bold text-slate-800">📚 Katalog Buku</h2>
+                <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-book"></i> Katalog Buku</h2>
                 <p class="text-slate-600 mt-1">Temukan buku favorit Anda dan pinjam sekarang</p>
             </div>
 
@@ -95,7 +94,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                     placeholder="Cari buku berdasarkan judul atau penulis..."
                     class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0E7490] focus:border-transparent"
                 >
-                <p class="text-xs text-slate-500 mt-2">💡 Mulai ketik untuk mencari buku</p>
+                <p class="text-xs text-slate-500 mt-2"><i class="fas fa-lightbulb"></i> Mulai ketik untuk mencari buku</p>
             </div>
 
             <!-- Category filter -->
@@ -127,7 +126,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                     <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl overflow-hidden shadow-xl shadow-slate-100/50 hover:shadow-2xl hover:shadow-slate-200/50 transition transform hover:scale-105">
                         <!-- Book image -->
                         <div class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 h-48 flex items-center justify-center">
-                            <img :src="'/Perpustakaan/assets/img/' + book.cover_buku" :alt="book.judul" class="w-full h-full object-cover">
+                            <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="w-full h-full object-cover">
                             <!-- Stock badge -->
                             <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
                                 <span x-text="book.stok + ' tersedia'"></span>
@@ -179,14 +178,14 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                             @click="showDetailModal = false"
                             class="absolute top-4 right-4 text-slate-600 hover:text-slate-800 text-2xl"
                         >
-                            ✕
+                            <i class="fas fa-times"></i>
                         </button>
 
                         <!-- Modal content -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" x-show="selectedBook">
                             <!-- Book image -->
                             <div class="flex items-center justify-center bg-slate-100 rounded-lg overflow-hidden">
-                                <img :src="'/Perpustakaan/assets/img/' + selectedBook.cover_buku" :alt="selectedBook.judul" class="w-full h-96 object-cover">
+                                <img :src="'/Glassmorphism/assets/img/' + selectedBook.cover_buku" :alt="selectedBook.judul" class="w-full h-96 object-cover">
                             </div>
 
                             <!-- Book details -->
@@ -240,7 +239,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                                 <!-- Warning for max loans -->
                                 <div x-show="!canBorrow" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                                     <p class="text-sm text-red-800">
-                                        ⚠️ Anda sudah mencapai batas maksimal peminjaman (3 buku). Kembalikan salah satu buku terlebih dahulu.
+                                        <i class="fas fa-exclamation-triangle"></i> Anda sudah mencapai batas maksimal peminjaman (3 buku). Kembalikan salah satu buku terlebih dahulu.
                                     </p>
                                 </div>
                             </div>
@@ -311,7 +310,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                     }
 
                     // Send booking request
-                    fetch('/Perpustakaan/api/create_booking.php', {
+                    fetch('/Glassmorphism/api/create_booking.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

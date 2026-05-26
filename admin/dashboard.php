@@ -44,6 +44,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - E-Perpus SMEA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
@@ -85,7 +86,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Welcome section -->
             <div class="mb-8">
-                <h2 class="text-3xl font-bold text-slate-800">Selamat datang, <?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>! 👋</h2>
+                <h2 class="text-3xl font-bold text-slate-800">Selamat datang, <?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>! <i class="fas fa-hand-paper"></i></h2>
                 <p class="text-slate-600 mt-1">Kelola sirkulasi perpustakaan dan pantau statistik sistem</p>
             </div>
 
@@ -99,7 +100,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                             <p class="text-4xl font-bold text-[#0E7490] mt-2"><?php echo $total_siswa; ?></p>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-lg">
-                            <span class="text-2xl">👥</span>
+                            <i class="fas fa-users text-2xl text-blue-600"></i>
                         </div>
                     </div>
                 </div>
@@ -112,7 +113,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                             <p class="text-4xl font-bold text-[#0E7490] mt-2"><?php echo $total_buku; ?></p>
                         </div>
                         <div class="bg-amber-100 p-3 rounded-lg">
-                            <span class="text-2xl">📚</span>
+                            <i class="fas fa-book text-2xl text-amber-600"></i>
                         </div>
                     </div>
                 </div>
@@ -125,7 +126,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                             <p class="text-4xl font-bold text-orange-600 mt-2"><?php echo $buku_sedang_dipinjam; ?></p>
                         </div>
                         <div class="bg-orange-100 p-3 rounded-lg">
-                            <span class="text-2xl">📖</span>
+                            <i class="fas fa-book-open text-2xl text-orange-600"></i>
                         </div>
                     </div>
                 </div>
@@ -138,7 +139,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                             <p class="text-4xl font-bold text-amber-600 mt-2"><?php echo $pending_approvals; ?></p>
                         </div>
                         <div class="bg-amber-100 p-3 rounded-lg">
-                            <span class="text-2xl">⏳</span>
+                            <i class="fas fa-hourglass-half text-2xl text-amber-600"></i>
                         </div>
                     </div>
                 </div>
@@ -150,11 +151,11 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                 <?php if ($overdue_books > 0): ?>
                     <div class="bg-red-50/40 border border-red-200 rounded-2xl p-6">
                         <div class="flex items-start gap-4">
-                            <span class="text-4xl">⚠️</span>
+                            <i class="fas fa-exclamation-triangle text-4xl text-red-600"></i>
                             <div>
                                 <h3 class="font-bold text-red-900">Buku Terlambat</h3>
                                 <p class="text-red-800 text-sm mt-1">Ada <?php echo $overdue_books; ?> peminjaman yang terlambat dikembalikan</p>
-                                <a href="/Perpustakaan/admin/sirkulasi.php" class="text-red-700 hover:text-red-900 text-sm font-semibold mt-2 inline-block">
+                                <a href="/Glassmorphism/admin/sirkulasi.php" class="text-red-700 hover:text-red-900 text-sm font-semibold mt-2 inline-block">
                                     Proses pengembalian →
                                 </a>
                             </div>
@@ -181,7 +182,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <!-- Category popularity chart -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">📊 Kategori Buku Paling Diminati</h3>
+                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-chart-pie"></i> Kategori Buku Paling Diminati</h3>
                     <div class="relative h-80">
                         <canvas id="categoryChart"></canvas>
                     </div>
@@ -189,7 +190,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
 
                 <!-- Statistics table -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">📈 Ringkasan Statistik</h3>
+                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-chart-line"></i> Ringkasan Statistik</h3>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center p-3 bg-white/30 rounded-lg">
                             <span class="text-slate-700">Total Peminjaman</span>
@@ -219,16 +220,16 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             <div class="bg-emerald-50/40 border border-emerald-200 rounded-2xl p-6">
                 <h3 class="text-lg font-bold text-emerald-900 mb-4">⚡ Tindakan Cepat</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <a href="/Perpustakaan/admin/sirkulasi.php" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/sirkulasi.php" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 px-4 py-3 rounded-lg font-semibold text-center transition">
                         Proses Booking
                     </a>
-                    <a href="/Perpustakaan/admin/katalog.php?action=add" class="bg-blue-100 hover:bg-blue-200 text-blue-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/katalog.php?action=add" class="bg-blue-100 hover:bg-blue-200 text-blue-900 px-4 py-3 rounded-lg font-semibold text-center transition">
                         Tambah Buku
                     </a>
-                    <a href="/Perpustakaan/admin/katalog.php" class="bg-purple-100 hover:bg-purple-200 text-purple-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/katalog.php" class="bg-purple-100 hover:bg-purple-200 text-purple-900 px-4 py-3 rounded-lg font-semibold text-center transition">
                         Kelola Katalog
                     </a>
-                    <a href="/Perpustakaan/admin/profil.php" class="bg-slate-100 hover:bg-slate-200 text-slate-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/profil.php" class="bg-slate-100 hover:bg-slate-200 text-slate-900 px-4 py-3 rounded-lg font-semibold text-center transition">
                         Pengaturan Akun
                     </a>
                 </div>

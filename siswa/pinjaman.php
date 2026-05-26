@@ -69,6 +69,7 @@ $riwayat = fetch_all(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pinjaman Saya - E-Perpus SMEA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -111,7 +112,7 @@ $riwayat = fetch_all(
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto" x-data="pinjamanApp()">
             <!-- Page title -->
             <div class="mb-6">
-                <h2 class="text-3xl font-bold text-slate-800">📋 Pinjaman Saya</h2>
+                <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-clipboard-list"></i> Pinjaman Saya</h2>
                 <p class="text-slate-600 mt-1">Kelola semua peminjaman buku Anda</p>
             </div>
 
@@ -122,21 +123,21 @@ $riwayat = fetch_all(
                     :class="activeTab === 'menunggu' ? 'bg-[#0E7490] text-white' : 'bg-white/50 hover:bg-white/70 text-slate-700'"
                     class="flex-1 min-w-[140px] px-4 py-3 rounded-lg font-semibold transition text-center"
                 >
-                    ⏳ Menunggu (<?php echo count($menunggu); ?>)
+                    <i class="fas fa-hourglass-half"></i> Menunggu (<?php echo count($menunggu); ?>)
                 </button>
                 <button
                     @click="activeTab = 'sedang'"
                     :class="activeTab === 'sedang' ? 'bg-[#0E7490] text-white' : 'bg-white/50 hover:bg-white/70 text-slate-700'"
                     class="flex-1 min-w-[140px] px-4 py-3 rounded-lg font-semibold transition text-center"
                 >
-                    📖 Sedang Dibawa (<?php echo count($sedang_dibawa); ?>)
+                    <i class="fas fa-book-open"></i> Sedang Dibawa (<?php echo count($sedang_dibawa); ?>)
                 </button>
                 <button
                     @click="activeTab = 'riwayat'"
                     :class="activeTab === 'riwayat' ? 'bg-[#0E7490] text-white' : 'bg-white/50 hover:bg-white/70 text-slate-700'"
                     class="flex-1 min-w-[140px] px-4 py-3 rounded-lg font-semibold transition text-center"
                 >
-                    ✓ Riwayat (<?php echo count($riwayat); ?>)
+                    <i class="fas fa-check"></i> Riwayat (<?php echo count($riwayat); ?>)
                 </button>
             </div>
 
@@ -145,7 +146,7 @@ $riwayat = fetch_all(
                 <?php if (empty($menunggu)): ?>
                     <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 text-center shadow-xl shadow-slate-100/50">
                         <p class="text-slate-600 mb-4">Anda belum memiliki booking yang menunggu konfirmasi</p>
-                        <a href="/Perpustakaan/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
+                        <a href="/Glassmorphism/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
                             Jelajahi Katalog
                         </a>
                     </div>
@@ -158,7 +159,7 @@ $riwayat = fetch_all(
                                     <p class="text-sm text-slate-600 mt-1">Penulis: <?php echo htmlspecialchars($item['penulis']); ?></p>
                                     <p class="text-xs text-slate-500 mt-2">Kategori: <?php echo htmlspecialchars($item['nama_kategori'] ?? '-'); ?></p>
                                     <p class="text-xs text-amber-700 mt-3 font-semibold">
-                                        ⏳ Booking sejak <?php echo format_datetime_id($item['tgl_booking']); ?>
+                                        <i class="fas fa-hourglass-half"></i> Booking sejak <?php echo format_datetime_id($item['tgl_booking']); ?>
                                     </p>
                                 </div>
                                 <button
@@ -170,7 +171,7 @@ $riwayat = fetch_all(
                             </div>
                             <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
                                 <p class="text-xs text-amber-800">
-                                    💡 Ambil buku ini dalam waktu 2x24 jam dari waktu booking. Jika tidak diambil, booking akan otomatis dibatalkan dan stok dipulihkan.
+                                    <i class="fas fa-lightbulb"></i> Ambil buku ini dalam waktu 2x24 jam dari waktu booking. Jika tidak diambil, booking akan otomatis dibatalkan dan stok dipulihkan.
                                 </p>
                             </div>
                         </div>
@@ -183,7 +184,7 @@ $riwayat = fetch_all(
                 <?php if (empty($sedang_dibawa)): ?>
                     <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 text-center shadow-xl shadow-slate-100/50">
                         <p class="text-slate-600 mb-4">Anda belum memiliki buku yang sedang dibawa</p>
-                        <a href="/Perpustakaan/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
+                        <a href="/Glassmorphism/siswa/katalog.php" class="inline-block bg-[#0E7490] hover:bg-[#155E75] text-white px-6 py-2 rounded-lg font-medium transition">
                             Pinjam Sekarang
                         </a>
                     </div>
@@ -269,10 +270,10 @@ $riwayat = fetch_all(
                                     <?php
                                     if ($item['status'] === 'Selesai') {
                                         $status_badge = 'bg-blue-100 text-blue-800';
-                                        $status_icon = '✓';
+                                        $status_icon = '<i class="fas fa-check"></i>';
                                     } else {
                                         $status_badge = 'bg-slate-100 text-slate-800';
-                                        $status_icon = '✕';
+                                        $status_icon = '<i class="fas fa-times"></i>';
                                     }
                                     ?>
                                     <div class="<?php echo $status_badge; ?> px-4 py-2 rounded-lg font-bold text-sm inline-block">
@@ -311,7 +312,7 @@ $riwayat = fetch_all(
                         cancelButtonText: 'Tidak'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            fetch('/Perpustakaan/api/cancel_booking.php', {
+                            fetch('/Glassmorphism/api/cancel_booking.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
