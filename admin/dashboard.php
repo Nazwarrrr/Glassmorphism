@@ -65,8 +65,8 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
         .float-ball {
             position: fixed;
             border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.25;
+            filter: blur(40px);
+            opacity: 0.4;
             z-index: 1;
         }
     </style>
@@ -85,13 +85,15 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
         <!-- Main content -->
         <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             <!-- Welcome section -->
-            <div class="mb-8">
+            <div class="mb-8 pb-6 border-b-2 border-slate-300/40">
                 <h2 class="text-3xl font-bold text-slate-800">Selamat datang, <?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>! <i class="fas fa-hand-paper"></i></h2>
                 <p class="text-slate-600 mt-1">Kelola sirkulasi perpustakaan dan pantau statistik sistem</p>
             </div>
 
             <!-- Key metrics grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">📊 Statistik Utama</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Total Siswa -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
                     <div class="flex items-start justify-between">
@@ -146,7 +148,8 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             </div>
 
             <!-- Alert boxes -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="mb-8 pb-6 border-b-2 border-slate-300/40">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Overdue alert -->
                 <?php if ($overdue_books > 0): ?>
                     <div class="bg-red-50/40 border border-red-200 rounded-2xl p-6">
@@ -176,10 +179,13 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                         </div>
                     </div>
                 <?php endif; ?>
+                </div>
             </div>
 
             <!-- Charts section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-4">📈 Analisis Data</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Category popularity chart -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
                     <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-chart-pie"></i> Kategori Buku Paling Diminati</h3>
@@ -217,19 +223,19 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             </div>
 
             <!-- Quick actions -->
-            <div class="bg-emerald-50/40 border border-emerald-200 rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-emerald-900 mb-4">⚡ Tindakan Cepat</h3>
+            <div class="bg-gradient-to-r from-slate-100/30 to-slate-200/30 border-2 border-slate-300/40 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-slate-800 mb-4">⚡ Tindakan Cepat</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <a href="/Glassmorphism/admin/sirkulasi.php" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/sirkulasi.php" class="bg-emerald-100/60 hover:bg-emerald-200/70 text-emerald-900 px-4 py-3 rounded-lg font-semibold text-center transition border border-emerald-300/40">
                         Proses Booking
                     </a>
-                    <a href="/Glassmorphism/admin/katalog.php?action=add" class="bg-blue-100 hover:bg-blue-200 text-blue-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/katalog.php?action=add" class="bg-blue-100/60 hover:bg-blue-200/70 text-blue-900 px-4 py-3 rounded-lg font-semibold text-center transition border border-blue-300/40">
                         Tambah Buku
                     </a>
-                    <a href="/Glassmorphism/admin/katalog.php" class="bg-purple-100 hover:bg-purple-200 text-purple-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/katalog.php" class="bg-purple-100/60 hover:bg-purple-200/70 text-purple-900 px-4 py-3 rounded-lg font-semibold text-center transition border border-purple-300/40">
                         Kelola Katalog
                     </a>
-                    <a href="/Glassmorphism/admin/profil.php" class="bg-slate-100 hover:bg-slate-200 text-slate-900 px-4 py-3 rounded-lg font-semibold text-center transition">
+                    <a href="/Glassmorphism/admin/profil.php" class="bg-slate-100/60 hover:bg-slate-200/70 text-slate-900 px-4 py-3 rounded-lg font-semibold text-center transition border border-slate-300/40">
                         Pengaturan Akun
                     </a>
                 </div>
@@ -287,9 +293,11 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             const container = document.getElementById('floating-container');
             const ballCount = Math.random() * 3 + 3;
             const colors = [
-                'rgba(135, 206, 250, 0.4)',
-                'rgba(100, 200, 255, 0.35)',
-                'rgba(120, 210, 250, 0.4)'
+                'rgba(14, 116, 144, 0.8)',
+                'rgba(6, 182, 212, 0.75)',
+                'rgba(34, 197, 94, 0.7)',
+                'rgba(59, 130, 246, 0.75)',
+                'rgba(147, 51, 234, 0.7)'
             ];
 
             for (let i = 0; i < ballCount; i++) {

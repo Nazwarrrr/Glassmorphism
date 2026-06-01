@@ -85,9 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .float-ball {
             position: fixed;
             border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.25;
+            filter: blur(40px);
+            opacity: 0.35;
             z-index: 1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
     </style>
 </head>
@@ -99,15 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="min-h-screen flex items-center justify-center relative z-10">
         <div class="w-full max-w-md p-6">
             <!-- Card login dengan glass morphism effect -->
-            <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 shadow-xl shadow-slate-100/50 relative">
-                <!-- Logo Perpus (Far Left) -->
-                <div class="absolute -left-2 -top-2">
-                    <img src="/Glassmorphism/images/perpus-logo.png" alt="Perpus Logo" class="h-20 object-contain">
+            <div class="glass-card rounded-2xl p-8 relative">
+                <!-- Logo Perpus (Center Top) -->
+                <div class="flex justify-center mb-4">
+                    <img src="/Glassmorphism/assets/img/perpus-logo.png" alt="Perpus Logo" class="h-16 object-contain">
                 </div>
 
                 <!-- Title -->
-                <div class="text-center mb-8 pt-6">
-                    <h1 class="text-3xl font-bold text-[#0E7490] mb-2">E-Perpus SMEA</h1>
+                <div class="text-center mb-8">
                     <p class="text-slate-600 text-sm">Sistem Perpustakaan Digital Sekolah Menengah Kejuruan</p>
                 </div>
 
@@ -167,8 +173,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mt-8 pt-6 border-t border-white/40">
                     <p class="text-xs text-slate-600 mb-3 font-semibold">Akun Test (untuk demo):</p>
                     <div class="space-y-2 text-xs text-slate-600">
-                        <p><strong>Siswa:</strong> siswa1 / password</p>
-                        <p><strong>Admin:</strong> admin1 / password</p>
+                        <p><strong>Siswa:</strong> siswa / password</p>
+                        <p><strong>Admin:</strong> admin / password</p>
                     </div>
                 </div>
             </div>
@@ -186,9 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const container = document.getElementById('floating-container');
             const ballCount = Math.random() * 3 + 3; // 3-6 balls
             const colors = [
-                'rgba(135, 206, 250, 0.4)',
-                'rgba(100, 200, 255, 0.35)',
-                'rgba(120, 210, 250, 0.4)'
+                'rgba(14, 116, 144, 0.6)',
+                'rgba(21, 94, 117, 0.55)',
+                'rgba(6, 182, 212, 0.5)'
             ];
 
             for (let i = 0; i < ballCount; i++) {

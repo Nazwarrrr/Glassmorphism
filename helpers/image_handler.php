@@ -39,7 +39,7 @@ function validate_image($file) {
     // Additional check: file extension
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($ext, ALLOWED_EXTENSIONS)) {
-        return ['valid' => false, 'error' => 'Ekstensi file tidak valid.'];
+        return ['valid' => false, 'error' => 'Ekstensi file tidak valid. Gunakan JPG atau PNG saja.'];
     }
 
     return ['valid' => true, 'error' => null];
@@ -127,8 +127,11 @@ function handle_image_upload($file, $id_buku) {
     }
 
     try {
-        // Target filename: buku_[id].jpg
-        $filename = 'buku_' . $id_buku . '.jpg';
+        // Get source file extension
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        
+        // Target filename based on extension
+        $filename = 'buku_' . $id_buku . '.' . $ext;
         $dest_path = IMAGE_UPLOAD_DIR . $filename;
 
         // Delete old file if exists
@@ -136,18 +139,9 @@ function handle_image_upload($file, $id_buku) {
             @unlink($dest_path);
         }
 
-        // Get source file extension
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-        // Convert if PNG, atau copy directly if JPG
-        if ($ext === 'png') {
-            if (!convert_png_to_jpg($file['tmp_name'], $dest_path)) {
-                return ['success' => false, 'filename' => null, 'error' => 'Gagal mengkonversi gambar PNG ke JPG.'];
-            }
-        } else {
-            if (!move_uploaded_file($file['tmp_name'], $dest_path)) {
-                return ['success' => false, 'filename' => null, 'error' => 'Gagal mengunggah gambar.'];
-            }
+        // Move uploaded file directly (no conversion needed)
+        if (!move_uploaded_file($file['tmp_name'], $dest_path)) {
+            return ['success' => false, 'filename' => null, 'error' => 'Gagal mengunggah gambar.'];
         }
 
         return ['success' => true, 'filename' => $filename, 'error' => null];

@@ -54,16 +54,25 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
         .float-ball {
             position: fixed;
             border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.25;
+            filter: blur(40px);
+            opacity: 0.4;
             z-index: 1;
         }
 
         .book-card-image {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
             background-color: #f3f4f6;
+        }
+
+        .book-image-container {
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
         }
     </style>
 </head>
@@ -125,8 +134,8 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                 <template x-for="book in filteredBooks" :key="book.id_buku">
                     <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl overflow-hidden shadow-xl shadow-slate-100/50 hover:shadow-2xl hover:shadow-slate-200/50 transition transform hover:scale-105">
                         <!-- Book image -->
-                        <div class="relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 h-48 flex items-center justify-center">
-                            <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="w-full h-full object-cover">
+                        <div class="book-image-container relative">
+                            <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="book-card-image">
                             <!-- Stock badge -->
                             <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
                                 <span x-text="book.stok + ' tersedia'"></span>
@@ -360,9 +369,11 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
             const container = document.getElementById('floating-container');
             const ballCount = Math.random() * 3 + 3;
             const colors = [
-                'rgba(135, 206, 250, 0.4)',
-                'rgba(100, 200, 255, 0.35)',
-                'rgba(120, 210, 250, 0.4)'
+                'rgba(14, 116, 144, 0.8)',
+                'rgba(6, 182, 212, 0.75)',
+                'rgba(34, 197, 94, 0.7)',
+                'rgba(59, 130, 246, 0.75)',
+                'rgba(147, 51, 234, 0.7)'
             ];
 
             for (let i = 0; i < ballCount; i++) {

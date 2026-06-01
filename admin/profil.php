@@ -109,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .float-ball {
             position: fixed;
             border-radius: 50%;
-            filter: blur(20px);
-            opacity: 0.25;
+            filter: blur(40px);
+            opacity: 0.4;
             z-index: 1;
         }
     </style>
@@ -295,9 +295,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const container = document.getElementById('floating-container');
             const ballCount = Math.random() * 3 + 3;
             const colors = [
-                'rgba(135, 206, 250, 0.4)',
-                'rgba(100, 200, 255, 0.35)',
-                'rgba(120, 210, 250, 0.4)'
+                'rgba(14, 116, 144, 0.8)',
+                'rgba(6, 182, 212, 0.75)',
+                'rgba(34, 197, 94, 0.7)',
+                'rgba(59, 130, 246, 0.75)',
+                'rgba(147, 51, 234, 0.7)'
             ];
 
             for (let i = 0; i < ballCount; i++) {

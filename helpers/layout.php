@@ -19,7 +19,7 @@ function render_navbar($page_title, $role = null) {
             <div class="flex justify-between items-center h-16">
                 <!-- Logo/Title -->
                 <div class="flex items-center gap-3">
-                    <img src="/Glassmorphism/images/perpus-logo.png" alt="Perpus Logo" class="h-12 object-contain">
+                    <img src="/Glassmorphism/assets/img/perpus-logo.png" alt="Perpus Logo" class="h-12 object-contain">
                     <div>
                         <h1 class="text-lg font-bold text-[#0E7490]">E-Perpus SMEA</h1>
                         <p class="text-xs text-slate-500"><?php echo htmlspecialchars($page_title); ?></p>
@@ -54,18 +54,19 @@ function render_sidebar_siswa($active_menu) {
         'profil' => ['label' => 'Profil', 'url' => '/Glassmorphism/siswa/profil.php', 'icon' => '<i class="fas fa-user"></i>'],
     ];
     ?>
-    <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r border-white/60 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
+    <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r-2 border-slate-300/40 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
         <nav class="flex md:flex-col gap-2 p-4 overflow-x-auto md:overflow-visible">
             <?php foreach ($menus as $key => $menu): ?>
                 <a href="<?php echo $menu['url']; ?>" class="
-                    flex-shrink-0 md:flex-shrink px-4 py-3 rounded-lg whitespace-nowrap md:whitespace-normal
+                    sidebar-link flex-shrink-0 md:flex-shrink px-4 py-3 rounded-lg whitespace-nowrap md:whitespace-normal
                     <?php echo ($active_menu === $key) 
                         ? 'bg-[#0E7490] text-white font-semibold' 
                         : 'bg-white/50 hover:bg-white/70 text-slate-700 font-medium'; ?>
-                    transition duration-200 flex items-center gap-2
+                    transition duration-200 flex items-center gap-2 relative overflow-hidden group
                 ">
-                    <span><?php echo $menu['icon']; ?></span>
-                    <span><?php echo $menu['label']; ?></span>
+                    <span class="relative z-10"><?php echo $menu['icon']; ?></span>
+                    <span class="relative z-10"><?php echo $menu['label']; ?></span>
+                    <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out"></span>
                 </a>
             <?php endforeach; ?>
         </nav>
@@ -85,18 +86,19 @@ function render_sidebar_admin($active_menu) {
         'profil' => ['label' => 'Profil', 'url' => '/Glassmorphism/admin/profil.php', 'icon' => '<i class="fas fa-user"></i>'],
     ];
     ?>
-    <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r border-white/60 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
+    <aside class="w-full md:w-64 bg-white/40 backdrop-blur-lg border-r-2 border-slate-300/40 md:sticky md:top-16 md:h-[calc(100vh-64px)]">
         <nav class="flex md:flex-col gap-2 p-4 overflow-x-auto md:overflow-visible">
             <?php foreach ($menus as $key => $menu): ?>
                 <a href="<?php echo $menu['url']; ?>" class="
-                    flex-shrink-0 md:flex-shrink px-4 py-3 rounded-lg whitespace-nowrap md:whitespace-normal
+                    sidebar-link flex-shrink-0 md:flex-shrink px-4 py-3 rounded-lg whitespace-nowrap md:whitespace-normal
                     <?php echo ($active_menu === $key) 
                         ? 'bg-[#0E7490] text-white font-semibold' 
                         : 'bg-white/50 hover:bg-white/70 text-slate-700 font-medium'; ?>
-                    transition duration-200 flex items-center gap-2
+                    transition duration-200 flex items-center gap-2 relative overflow-hidden group
                 ">
-                    <span><?php echo $menu['icon']; ?></span>
-                    <span><?php echo $menu['label']; ?></span>
+                    <span class="relative z-10"><?php echo $menu['icon']; ?></span>
+                    <span class="relative z-10"><?php echo $menu['label']; ?></span>
+                    <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out"></span>
                 </a>
             <?php endforeach; ?>
         </nav>

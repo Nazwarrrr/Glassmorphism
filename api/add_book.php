@@ -59,20 +59,34 @@ try {
 
     // Handle image upload jika ada
     $cover_filename = 'default.jpg';
-    if (isset($_FILES['cover_buku']) && $_FILES['cover_buku']['error'] === UPLOAD_ERR_OK) {
-        $image_result = handle_image_upload($_FILES['cover_buku'], $id_buku);
+    if (isset($_FILES['cover_buku'])) {
+        // Log file info untuk debug
+        error_log('FILE UPLOAD DEBUG for buku #' . $id_buku . ':');
+        error_log('  - name: ' . ($_FILES['cover_buku']['name'] ?? 'NONE'));
+        error_log('  - error: ' . ($_FILES['cover_buku']['error'] ?? 'NONE'));
+        error_log('  - size: ' . ($_FILES['cover_buku']['size'] ?? 'NONE'));
         
-        if ($image_result['success']) {
-            $cover_filename = $image_result['filename'];
-            // Update database dengan nama file yang benar
-            execute_action(
-                "UPDATE buku SET cover_buku = ? WHERE id_buku = ?",
-                [$cover_filename, $id_buku]
-            );
+        if ($_FILES['cover_buku']['error'] === UPLOAD_ERR_OK) {
+            $image_result = handle_image_upload($_FILES['cover_buku'], $id_buku);
+            
+            if ($image_result['success']) {
+                $cover_filename = $image_result['filename'];
+                // Update database dengan nama file yang benar
+                execute_action(
+                    "UPDATE buku SET cover_buku = ? WHERE id_buku = ?",
+                    [$cover_filename, $id_buku]
+                );
+                error_log('  ✓ Upload success: ' . $cover_filename);
+            } else {
+                // Image upload gagal, tapi buku tetap dibuat dengan default.jpg
+                error_log('  ✗ Upload failed: ' . $image_result['error']);
+                error_log('Image upload failed for buku #' . $id_buku . ': ' . $image_result['error']);
+            }
         } else {
-            // Image upload gagal, tapi buku tetap dibuat dengan default.jpg
-            error_log('Image upload failed for buku #' . $id_buku . ': ' . $image_result['error']);
+            error_log('  ✗ Upload error code: ' . $_FILES['cover_buku']['error']);
         }
+    } else {
+        error_log('No file uploaded for buku #' . $id_buku);
     }
 
     http_response_code(200);
