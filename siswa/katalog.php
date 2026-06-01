@@ -88,6 +88,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
 
         .book-card-content {
             padding: 0;
+            margin-top: auto;
         }
 
         /* Hide scrollbar pada modal form */

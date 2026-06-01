@@ -83,6 +83,7 @@ $books = fetch_all(
 
         .book-card-content {
             padding: 0;
+            margin-top: auto;
         }
 
         /* Hide scrollbar pada modal form */

@@ -15,13 +15,13 @@ function render_navbar($page_title, $role = null) {
     }
     ?>
     <nav class="bg-white/40 backdrop-blur-lg border-b border-white/60 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo/Title -->
                 <div class="flex items-center gap-3">
                     <img src="/Glassmorphism/assets/img/perpus-logo.png" alt="Perpus Logo" class="h-12 object-contain">
                     <div>
-                        <h1 class="text-lg font-bold text-[#0E7490]">E-Perpus SMEA</h1>
+                        <h1 class="text-lg font-bold text-[#0E7490]">SMEA</h1>
                         <p class="text-xs text-slate-500"><?php echo htmlspecialchars($page_title); ?></p>
                     </div>
                 </div>
