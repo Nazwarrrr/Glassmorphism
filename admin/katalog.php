@@ -62,12 +62,37 @@ $books = fetch_all(
         }
 
         .book-image-container {
-            aspect-ratio: 2 / 3;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .book-card {
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 12px;
+        }
+
+        .book-card-image-wrapper {
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .book-card-content {
+            padding: 0;
+        }
+
+        /* Hide scrollbar pada modal form */
+        .modal-scrollable {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .modal-scrollable::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -111,18 +136,20 @@ $books = fetch_all(
             <!-- Books grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <template x-for="book in filteredBooks" :key="book.id_buku">
-                    <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl overflow-hidden shadow-xl shadow-slate-100/50 hover:shadow-2xl transition">
+                    <div class="book-card bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl shadow-xl shadow-slate-100/50 hover:shadow-2xl hover:shadow-slate-200/50 transition transform hover:scale-105">
                         <!-- Book image -->
-                        <div class="book-image-container relative">
-                            <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="book-card-image">
-                            <!-- Stock badge -->
-                            <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                <span x-text="book.stok + ' stok'"></span>
+                        <div class="book-card-image-wrapper">
+                            <div class="book-image-container relative">
+                                <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="book-card-image">
+                                <!-- Stock badge -->
+                                <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                    <span x-text="book.stok + ' stok'"></span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Book info -->
-                        <div class="p-4">
+                        <div class="book-card-content">
                             <h3 class="font-bold text-slate-800 line-clamp-2" x-text="book.judul"></h3>
                             <p class="text-sm text-slate-600 mt-1" x-text="book.penulis"></p>
                             <div class="mt-2 flex items-center justify-between">
@@ -164,7 +191,7 @@ $books = fetch_all(
                 @keydown.escape="showModal = false"
                 style="display: none;"
             >
-                <div class="bg-white/95 backdrop-blur-sm rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="bg-white/95 backdrop-blur-sm rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto modal-scrollable">
                     <div class="p-6 sm:p-8">
                         <!-- Close button -->
                         <button
