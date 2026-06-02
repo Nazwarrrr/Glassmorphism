@@ -206,7 +206,7 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                                 <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="book-card-image">
                                 <!-- Stock badge -->
                                 <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                    <span x-text="book.stok + ' tersedia'"></span>
+                                    <span x-text="book.stok + ' stok'"></span>
                                 </div>
                             </div>
                         </div>
@@ -220,17 +220,14 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                                 <span class="text-xs text-slate-500" x-text="book.tahun_terbit ? book.tahun_terbit : '-'"></span>
                             </div>
 
-                            <!-- Sinopsis preview -->
-                            <p class="text-xs text-slate-600 mt-3 line-clamp-3" x-text="book.sinopsis || 'Tidak ada deskripsi'"></p>
-
                             <!-- Action button -->
                             <button
                                 @click="openDetailModal(book)"
-                                :disabled="!canBorrow"
-                                class="w-full mt-4 bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
-                                :title="!canBorrow ? 'Anda sudah mencapai batas peminjaman (3 buku)' : ''"
+                                :disabled="book.stok <= 0 || !canBorrow"
+                                class="w-full mt-4 bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                                :title="!canBorrow ? 'Anda sudah mencapai batas peminjaman (3 buku)' : (book.stok <= 0 ? 'Stok habis' : '')"
                             >
-                                Lihat Detail
+                                <i class="fas fa-eye"></i> Lihat Detail
                             </button>
                         </div>
                     </div>
