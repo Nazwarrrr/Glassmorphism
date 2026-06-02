@@ -81,9 +81,50 @@ $active_books = fetch_all(
             opacity: 0.4;
             z-index: 1;
         }
+
+        /* Page transition styles - 500ms smooth */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        body {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
+
+        .page-transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .page-transition-overlay.active {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
+
+        /* Subtle pulse animation for floating balls */
+        @keyframes subtlePulse {
+            0%, 100% { filter: blur(40px); opacity: 0.4; }
+            50% { filter: blur(40px); opacity: 0.45; }
+        }
+
+        .float-ball.pulse {
+            animation: subtlePulse 4s ease-in-out infinite !important;
+        }
     </style>
 </head>
 <body class="bg-white">
+    <!-- Page transition overlay -->
+    <div class="page-transition-overlay"></div>
+
     <!-- Floating background balls -->
     <div id="floating-container"></div>
 
@@ -218,7 +259,7 @@ $active_books = fetch_all(
         </main>
     </div>
 
-    <!-- Floating balls script -->
+    <!-- Floating balls and transition script -->
     <script>
         function createFloatingBalls() {
             const container = document.getElementById('floating-container');
@@ -233,7 +274,7 @@ $active_books = fetch_all(
 
             for (let i = 0; i < ballCount; i++) {
                 const ball = document.createElement('div');
-                ball.className = 'float-ball';
+                ball.className = 'float-ball pulse';
 
                 const size = Math.random() * 200 + 150;
                 const duration = Math.random() * 15 + 20;
@@ -248,12 +289,29 @@ $active_books = fetch_all(
                 ball.style.background = colors[Math.floor(Math.random() * colors.length)];
                 ball.style.animation = `
                     floatY ${duration}s ease-in-out ${delay}s infinite,
-                    floatX ${duration * 1.5}s ease-in-out ${delay}s infinite
+                    floatX ${duration * 1.5}s ease-in-out ${delay}s infinite,
+                    subtlePulse 4s ease-in-out infinite
                 `;
 
                 container.appendChild(ball);
             }
         }
+
+        // Handle page navigation with transition
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.includes('#') && link.target !== '_blank') {
+                const isInternalLink = link.href.includes(window.location.origin) || link.href.startsWith('/');
+                if (isInternalLink) {
+                    e.preventDefault();
+                    const overlay = document.querySelector('.page-transition-overlay');
+                    overlay.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 250);
+                }
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', createFloatingBalls);
     </script>

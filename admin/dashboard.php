@@ -69,9 +69,50 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
             opacity: 0.4;
             z-index: 1;
         }
+
+        /* Page transition styles - 500ms smooth */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        body {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
+
+        .page-transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .page-transition-overlay.active {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
+
+        /* Subtle pulse animation for floating balls */
+        @keyframes subtlePulse {
+            0%, 100% { filter: blur(40px); opacity: 0.4; }
+            50% { filter: blur(40px); opacity: 0.45; }
+        }
+
+        .float-ball.pulse {
+            animation: subtlePulse 4s ease-in-out infinite !important;
+        }
     </style>
 </head>
 <body class="bg-white">
+    <!-- Page transition overlay -->
+    <div class="page-transition-overlay"></div>
+
     <!-- Floating background balls -->
     <div id="floating-container"></div>
 
@@ -92,7 +133,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
 
             <!-- Key metrics grid -->
             <div class="mb-8">
-                <h3 class="text-lg font-semibold text-slate-700 mb-4">📊 Statistik Utama</h3>
+                <h3 class="text-lg font-semibold text-slate-700 mb-4"><i class="fas fa-chart-bar"></i> Statistik Utama</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Total Siswa -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
@@ -170,7 +211,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                 <?php if ($total_fines > 0): ?>
                     <div class="bg-orange-50/40 border border-orange-200 rounded-2xl p-6">
                         <div class="flex items-start gap-4">
-                            <span class="text-4xl">💰</span>
+                            <i class="fas fa-money-bill text-4xl text-orange-600"></i>
                             <div>
                                 <h3 class="font-bold text-orange-900">Total Denda Terhitung</h3>
                                 <p class="text-orange-800 text-sm mt-1"><?php echo format_rupiah($total_fines); ?> dari semua peminjaman terlambat</p>
@@ -184,11 +225,11 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
 
             <!-- Charts section -->
             <div class="mb-8">
-                <h3 class="text-lg font-semibold text-slate-700 mb-4">📈 Analisis Data</h3>
+                <h3 class="text-lg font-semibold text-slate-700 mb-4"><i class="fas fa-chart-line"></i> Analisis Data</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Category popularity chart -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-chart-pie"></i> Kategori Buku Paling Diminati</h3>
+                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-chart-bar"></i> Kategori Buku Paling Diminati</h3>
                     <div class="relative h-80">
                         <canvas id="categoryChart"></canvas>
                     </div>
@@ -224,7 +265,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
 
             <!-- Quick actions -->
             <div class="bg-gradient-to-r from-slate-100/30 to-slate-200/30 border-2 border-slate-300/40 rounded-2xl p-6">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">⚡ Tindakan Cepat</h3>
+                <h3 class="text-lg font-bold text-slate-800 mb-4"><i class="fas fa-bolt"></i> Tindakan Cepat</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <a href="/Glassmorphism/admin/sirkulasi.php" class="bg-emerald-100/60 hover:bg-emerald-200/70 text-emerald-900 px-4 py-3 rounded-lg font-semibold text-center transition border border-emerald-300/40">
                         Proses Booking
@@ -287,7 +328,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
         });
     </script>
 
-    <!-- Floating balls script -->
+    <!-- Floating balls and transition script -->
     <script>
         function createFloatingBalls() {
             const container = document.getElementById('floating-container');
@@ -302,7 +343,7 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
 
             for (let i = 0; i < ballCount; i++) {
                 const ball = document.createElement('div');
-                ball.className = 'float-ball';
+                ball.className = 'float-ball pulse';
 
                 const size = Math.random() * 200 + 150;
                 const duration = Math.random() * 15 + 20;
@@ -317,12 +358,29 @@ $total_fines = fetch_one("SELECT SUM(denda) as total FROM peminjaman WHERE denda
                 ball.style.background = colors[Math.floor(Math.random() * colors.length)];
                 ball.style.animation = `
                     floatY ${duration}s ease-in-out ${delay}s infinite,
-                    floatX ${duration * 1.5}s ease-in-out ${delay}s infinite
+                    floatX ${duration * 1.5}s ease-in-out ${delay}s infinite,
+                    subtlePulse 4s ease-in-out infinite
                 `;
 
                 container.appendChild(ball);
             }
         }
+
+        // Handle page navigation with transition
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.includes('#') && link.target !== '_blank') {
+                const isInternalLink = link.href.includes(window.location.origin) || link.href.startsWith('/');
+                if (isInternalLink) {
+                    e.preventDefault();
+                    const overlay = document.querySelector('.page-transition-overlay');
+                    overlay.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 250);
+                }
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', createFloatingBalls);
     </script>

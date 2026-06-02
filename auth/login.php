@@ -96,9 +96,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
+
+        /* Page transition styles - 500ms smooth */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        body {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
+
+        .page-transition-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .page-transition-overlay.active {
+            animation: fadeIn 500ms ease-in-out forwards;
+        }
     </style>
 </head>
 <body class="bg-white overflow-hidden">
+    <!-- Page transition overlay -->
+    <div class="page-transition-overlay"></div>
+
     <!-- Floating background balls -->
     <div id="floating-container"></div>
 
