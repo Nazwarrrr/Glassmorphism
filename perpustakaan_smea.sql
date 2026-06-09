@@ -124,6 +124,19 @@ INSERT INTO `users` (`id_user`, `username`, `password`, `nama_lengkap`, `role`, 
 (1, 'siswa', '$2y$10$40mKMCQMHi9NOPkRo1kOaezXlzFql9UgcmDPmG2BFVOPCniBJlcAW', 'Siswa Demo', 'siswa', 'XII RPL 1', '2026-06-02 01:30:20'),
 (2, 'admin', '$2y$10$EC1wpMsbOBzGCTRJpsnlC.nJjVxJebixalECP6YHby1CPK05S7Edu', 'Admin Perpustakaan', 'admin', NULL, '2026-06-02 01:30:20');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favorit`
+--
+
+CREATE TABLE IF NOT EXISTS `favorit` (
+  `id_favorit` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_buku` int(11) NOT NULL,
+  `tgl_ditambahkan` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -161,6 +174,15 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `favorit`
+--
+ALTER TABLE `favorit`
+  ADD PRIMARY KEY (`id_favorit`),
+  ADD UNIQUE KEY `unique_user_buku` (`id_user`, `id_buku`),
+  ADD KEY `idx_user` (`id_user`),
+  ADD KEY `idx_buku` (`id_buku`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -189,6 +211,12 @@ ALTER TABLE `users`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `favorit`
+--
+ALTER TABLE `favorit`
+  MODIFY `id_favorit` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -204,6 +232,13 @@ ALTER TABLE `buku`
 ALTER TABLE `peminjaman`
   ADD CONSTRAINT `peminjaman_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
   ADD CONSTRAINT `peminjaman_ibfk_2` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `favorit`
+--
+ALTER TABLE `favorit`
+  ADD CONSTRAINT `favorit_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
+  ADD CONSTRAINT `favorit_ibfk_2` FOREIGN KEY (`id_buku`) REFERENCES `buku` (`id_buku`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

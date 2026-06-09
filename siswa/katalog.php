@@ -26,6 +26,13 @@ $books = fetch_all(
 $id_user = $_SESSION['id_user'];
 $user_active_loans = get_user_active_loans($id_user);
 $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
+
+// Get user's favorite books
+$user_favorites = fetch_all(
+    "SELECT id_buku FROM favorit WHERE id_user = ?",
+    [$id_user]
+);
+$favorite_ids = array_map(fn($fav) => $fav['id_buku'], $user_favorites);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -204,6 +211,15 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                         <div class="book-card-image-wrapper">
                             <div class="book-image-container relative">
                                 <img :src="'/Glassmorphism/assets/img/' + book.cover_buku" :alt="book.judul" class="book-card-image">
+                                <!-- Favorite star button -->
+                                <button
+                                    @click.stop="toggleFavorite(book.id_buku)"
+                                    :title="isFavorited(book.id_buku) ? 'Hapus dari favorit' : 'Tambah ke favorit'"
+                                    class="absolute top-3 left-3 text-2xl transition hover:scale-110 focus:outline-none"
+                                    :class="isFavorited(book.id_buku) ? 'text-yellow-400' : 'text-gray-300'"
+                                >
+                                    <i :class="isFavorited(book.id_buku) ? 'fas fa-star' : 'far fa-star'"></i>
+                                </button>
                                 <!-- Stock badge -->
                                 <div :class="book.stok > 0 ? 'bg-emerald-500' : 'bg-red-500'" class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold">
                                     <span x-text="book.stok + ' stok'"></span>
@@ -257,66 +273,71 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                         </button>
 
                         <!-- Modal content -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6" x-show="selectedBook">
-                            <!-- Book image -->
-                            <div class="flex items-center justify-center bg-slate-100 rounded-lg overflow-hidden">
-                                <img :src="'/Glassmorphism/assets/img/' + selectedBook.cover_buku" :alt="selectedBook.judul" class="w-full h-96 object-cover">
+                        <div x-show="selectedBook" class="flex flex-col">
+                            <div class="relative">
+                                <!-- Book image (floated left) -->
+                                <div class="float-left mr-6 mb-6 bg-slate-100 rounded-lg overflow-hidden" style="width: 40%; max-width: 250px;">
+                                    <img :src="'/Glassmorphism/assets/img/' + selectedBook.cover_buku" :alt="selectedBook.judul" class="w-full h-full object-contain" style="max-height: 400px;">
+                                </div>
+
+                                <!-- Book details (wraps around image) -->
+                                <div>
+                                    <h2 class="text-2xl font-bold text-slate-800 mb-2" x-text="selectedBook.judul"></h2>
+                                    <p class="text-slate-600 mb-4" x-text="'Penulis: ' + selectedBook.penulis"></p>
+
+                                    <!-- Book metadata -->
+                                    <div class="space-y-3 mb-6 border-t border-slate-200 pt-4">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-600">Penerbit:</span>
+                                            <span class="font-medium" x-text="selectedBook.penerbit || '-'"></span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-600">Tahun Terbit:</span>
+                                            <span class="font-medium" x-text="selectedBook.tahun_terbit || '-'"></span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-600">Kategori:</span>
+                                            <span class="font-medium" x-text="selectedBook.nama_kategori || '-'"></span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-600">Stok Tersedia:</span>
+                                            <span :class="selectedBook.stok > 0 ? 'text-emerald-600' : 'text-red-600'" class="font-bold" x-text="selectedBook.stok"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sinopsis -->
+                                    <div class="mb-6">
+                                        <h3 class="font-semibold text-slate-800 mb-2">Sinopsis:</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed" x-text="selectedBook.sinopsis || 'Tidak ada deskripsi'"></p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Clear float for buttons -->
+                                <div class="clear-both"></div>
                             </div>
 
-                            <!-- Book details -->
-                            <div>
-                                <h2 class="text-2xl font-bold text-slate-800 mb-2" x-text="selectedBook.judul"></h2>
-                                <p class="text-slate-600 mb-4" x-text="'Penulis: ' + selectedBook.penulis"></p>
+                            <!-- Action buttons -->
+                            <div class="flex gap-3 mt-6">
+                                <button
+                                    @click="bookingBuku(selectedBook.id_buku)"
+                                    :disabled="selectedBook.stok <= 0 || !canBorrow"
+                                    class="flex-1 bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Pinjam Buku
+                                </button>
+                                <button
+                                    @click="showDetailModal = false"
+                                    class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-3 rounded-lg font-semibold transition"
+                                >
+                                    Tutup
+                                </button>
+                            </div>
 
-                                <!-- Book metadata -->
-                                <div class="space-y-3 mb-6 border-t border-slate-200 pt-4">
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Penerbit:</span>
-                                        <span class="font-medium" x-text="selectedBook.penerbit || '-'"></span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Tahun Terbit:</span>
-                                        <span class="font-medium" x-text="selectedBook.tahun_terbit || '-'"></span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Kategori:</span>
-                                        <span class="font-medium" x-text="selectedBook.nama_kategori || '-'"></span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-slate-600">Stok Tersedia:</span>
-                                        <span :class="selectedBook.stok > 0 ? 'text-emerald-600' : 'text-red-600'" class="font-bold" x-text="selectedBook.stok"></span>
-                                    </div>
-                                </div>
-
-                                <!-- Sinopsis -->
-                                <div class="mb-6">
-                                    <h3 class="font-semibold text-slate-800 mb-2">Sinopsis:</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed" x-text="selectedBook.sinopsis || 'Tidak ada deskripsi'"></p>
-                                </div>
-
-                                <!-- Action buttons -->
-                                <div class="flex gap-3">
-                                    <button
-                                        @click="bookingBuku(selectedBook.id_buku)"
-                                        :disabled="selectedBook.stok <= 0 || !canBorrow"
-                                        class="flex-1 bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        Pinjam Buku
-                                    </button>
-                                    <button
-                                        @click="showDetailModal = false"
-                                        class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-3 rounded-lg font-semibold transition"
-                                    >
-                                        Tutup
-                                    </button>
-                                </div>
-
-                                <!-- Warning for max loans -->
-                                <div x-show="!canBorrow" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                                    <p class="text-sm text-red-800">
-                                        <i class="fas fa-exclamation-triangle"></i> Anda sudah mencapai batas maksimal peminjaman (3 buku). Kembalikan salah satu buku terlebih dahulu.
-                                    </p>
-                                </div>
+                            <!-- Warning for max loans -->
+                            <div x-show="!canBorrow" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                                <p class="text-sm text-red-800">
+                                    <i class="fas fa-exclamation-triangle"></i> Anda sudah mencapai batas maksimal peminjaman (3 buku). Kembalikan salah satu buku terlebih dahulu.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -335,6 +356,8 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                 selectedBook: null,
                 canBorrow: <?php echo $can_borrow_more ? 'true' : 'false'; ?>,
                 books: <?php echo json_encode($books); ?>,
+                favorites: new Set(<?php echo json_encode($favorite_ids); ?>),
+                toggleLoading: false,
 
                 get filteredBooks() {
                     return this.books.filter(book => {
@@ -346,6 +369,51 @@ $can_borrow_more = $user_active_loans < MAX_PEMINJAMAN_AKTIF;
                             book.id_kategori == this.selectedCategory;
 
                         return matchesSearch && matchesCategory;
+                    });
+                },
+
+                isFavorited(id_buku) {
+                    return this.favorites.has(id_buku);
+                },
+
+                toggleFavorite(id_buku) {
+                    if (this.toggleLoading) return;
+                    
+                    this.toggleLoading = true;
+                    fetch('/Glassmorphism/api/toggle_favorite.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id_buku: id_buku })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (data.is_favorited) {
+                                this.favorites.add(id_buku);
+                            } else {
+                                this.favorites.delete(id_buku);
+                            }
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: data.message,
+                                confirmButtonColor: '#0E7490'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Terjadi kesalahan saat mengubah favorit.',
+                            confirmButtonColor: '#0E7490'
+                        });
+                    })
+                    .finally(() => {
+                        this.toggleLoading = false;
                     });
                 },
 

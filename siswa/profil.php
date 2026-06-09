@@ -21,6 +21,17 @@ $user = fetch_one(
     [$id_user]
 );
 
+// Get user's favorite books
+$user_favorites = fetch_all(
+    "SELECT f.id_favorit, b.id_buku, b.judul, b.penulis, b.cover_buku, b.tahun_terbit, b.stok, k.nama_kategori
+     FROM favorit f
+     JOIN buku b ON f.id_buku = b.id_buku
+     LEFT JOIN kategori k ON b.id_kategori = k.id_kategori
+     WHERE f.id_user = ?
+     ORDER BY f.tgl_ditambahkan DESC",
+    [$id_user]
+);
+
 // Process form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -93,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         * {
@@ -153,6 +165,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .float-ball.pulse {
             animation: subtlePulse 4s ease-in-out infinite !important;
+        }
+
+        .book-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #f3f4f6;
+        }
+
+        .book-image-container {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .book-card {
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 12px;
+        }
+
+        .book-card-image-wrapper {
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .book-card-content {
+            padding: 0;
+            margin-top: auto;
         }
     </style>
 </head>
@@ -250,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <!-- Change Password Section -->
                 <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-6 shadow-xl shadow-slate-100/50">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6">🔐 Ubah Password</h3>
+                    <h3 class="text-xl font-bold text-slate-800 mb-6"><i class="fas fa-lock"></i> Ubah Password</h3>
 
                     <form method="POST" class="space-y-4">
                         <input type="hidden" name="action" value="change_password">
@@ -332,8 +376,164 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
+
+            <!-- Favorite Books Section -->
+            <div class="mt-8">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-star"></i> Buku Favorit Saya</h2>
+                    <p class="text-slate-600 mt-1">Koleksi buku yang Anda tandai sebagai favorit</p>
+                </div>
+
+                <?php if (empty($user_favorites)): ?>
+                    <div class="bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl p-8 text-center">
+                        <p class="text-slate-600 mb-4"><i class="fas fa-star text-4xl text-gray-300"></i></p>
+                        <p class="text-slate-600">Anda belum menambahkan buku favorit</p>
+                        <p class="text-sm text-slate-500 mt-2">Buka katalog buku dan klik ikon bintang untuk menambahkan favorit</p>
+                    </div>
+                <?php else: ?>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" x-data="favoritesApp()">
+                        <?php foreach ($user_favorites as $book): ?>
+                            <div class="book-card bg-white/40 backdrop-blur-lg border border-white/60 rounded-2xl shadow-xl shadow-slate-100/50 hover:shadow-2xl hover:shadow-slate-200/50 transition transform hover:scale-105">
+                                <!-- Book image -->
+                                <div class="book-card-image-wrapper">
+                                    <div class="book-image-container relative">
+                                        <img src="/Glassmorphism/assets/img/<?php echo htmlspecialchars($book['cover_buku']); ?>" alt="<?php echo htmlspecialchars($book['judul']); ?>" class="book-card-image">
+                                        <!-- Remove from favorite star button -->
+                                        <button
+                                            @click.stop="removeFavorite(<?php echo $book['id_favorit']; ?>)"
+                                            title="Hapus dari favorit"
+                                            class="absolute top-3 left-3 text-2xl transition hover:scale-110 focus:outline-none text-yellow-400"
+                                        >
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                        <!-- Stock badge -->
+                                        <div class="absolute top-3 right-3 text-white px-3 py-1 rounded-full text-xs font-bold <?php echo $book['stok'] > 0 ? 'bg-emerald-500' : 'bg-red-500'; ?>">
+                                            <?php echo htmlspecialchars($book['stok']); ?> stok
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Book info -->
+                                <div class="book-card-content">
+                                    <h3 class="font-bold text-slate-800 line-clamp-2"><?php echo htmlspecialchars($book['judul']); ?></h3>
+                                    <p class="text-sm text-slate-600 mt-1"><?php echo htmlspecialchars($book['penulis']); ?></p>
+                                    <div class="mt-2 flex items-center justify-between">
+                                        <span class="text-xs bg-blue-100/80 text-blue-800 px-2 py-1 rounded"><?php echo htmlspecialchars($book['nama_kategori'] ?? 'Uncategorized'); ?></span>
+                                        <span class="text-xs text-slate-500"><?php echo htmlspecialchars($book['tahun_terbit'] ?? '-'); ?></span>
+                                    </div>
+
+                                    <!-- Action buttons -->
+                                    <button
+                                        @click="borrowBook(<?php echo $book['id_buku']; ?>)"
+                                        <?php echo $book['stok'] <= 0 ? 'disabled' : ''; ?>
+                                        class="w-full mt-4 bg-[#0E7490] hover:bg-[#155E75] text-white px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                                    >
+                                        <i class="fas fa-book"></i> Pinjam
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
         </main>
     </div>
+
+    <!-- Floating balls and transition script -->
+    <script>
+        // Alpine.js app for favorites
+        function favoritesApp() {
+            return {
+                borrowBook(id_buku) {
+                    fetch('/Glassmorphism/api/create_booking.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id_buku: id_buku })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: data.message,
+                                confirmButtonColor: '#0E7490'
+                            }).then(() => {
+                                setTimeout(() => location.reload(), 500);
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: data.message,
+                                confirmButtonColor: '#0E7490'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Terjadi kesalahan saat memproses booking.',
+                            confirmButtonColor: '#0E7490'
+                        });
+                    });
+                },
+
+                removeFavorite(id_favorit) {
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'Hapus dari Favorit?',
+                        text: 'Anda yakin ingin menghapus buku ini dari favorit?',
+                        confirmButtonText: 'Hapus',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#EF4444',
+                        showCancelButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('/Glassmorphism/api/remove_favorite.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ id_favorit: id_favorit })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Buku dihapus dari favorit.',
+                                        confirmButtonColor: '#0E7490'
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal!',
+                                        text: data.message,
+                                        confirmButtonColor: '#0E7490'
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat menghapus favorit.',
+                                    confirmButtonColor: '#0E7490'
+                                });
+                            });
+                        }
+                    });
+                }
+            };
+        }
+    </script>
 
     <!-- Floating balls and transition script -->
     <script>
